@@ -1,207 +1,443 @@
-<!DOCTYPE html>
+HtmlCopied!Copy<!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roblox UGC Sniper</title>
+
+    <title>Roblox UGC Scanner & Sniper</title>
+
     <style>
+
         body {
+
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #232527;
-            color: #ffffff;
+
+            background-color: #1a1a1a;
+
+            color: #e0e0e0;
+
             display: flex;
+
             justify-content: center;
+
             align-items: center;
-            height: 100vh;
+
+            min-height: 100vh;
+
             margin: 0;
+
+            padding: 20px;
+
         }
+
         .container {
-            background-color: #393b3d;
+
+            background-color: #2d2d2d;
+
             padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            width: 400px;
-            text-align: center;
+
+            border-radius: 12px;
+
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+
+            width: 500px;
+
+            max-width: 100%;
+
         }
-        h2 { margin-top: 0; color: #e2e2e2; }
-        input, button {
+
+        h2 { margin-top: 0; color: #fff; text-align: center; }
+
+        .warning {
+
+            background: #3e2723;
+
+            border: 1px solid #c62828;
+
+            color: #ff8a80;
+
+            padding: 10px;
+
+            border-radius: 4px;
+
+            font-size: 0.85em;
+
+            margin-bottom: 15px;
+
+        }
+
+        label { display: block; margin-top: 15px; font-weight: bold; color: #bbb; }
+
+        input, select {
+
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 4px;
-            border: 1px solid #555;
+
+            padding: 12px;
+
+            margin-top: 5px;
+
+            border-radius: 6px;
+
+            border: 1px solid #444;
+
+            background-color: #121212;
+
+            color: white;
+
             box-sizing: border-box;
+
         }
-        input {
-            background-color: #232527;
-            color: white;
-        }
+
+        input:focus { outline: 2px solid #00e676; border-color: transparent; }
+
         button {
-            background-color: #00b06f;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-        }
-        button:hover { background-color: #00965e; }
-        button.stop {
-            background-color: #c62828;
-        }
-        button.stop:hover {
-            background-color: #a01f1f;
-        }
-        #status {
-            margin-top: 15px;
-            font-size: 0.9em;
-            color: #aaa;
-        }
-        .log {
+
+            width: 100%;
+
+            padding: 15px;
+
             margin-top: 20px;
-            background: #232527;
-            padding: 10px;
-            border-radius: 4px;
-            height: 150px;
-            overflow-y: auto;
-            text-align: left;
-            font-family: monospace;
-            font-size: 0.8em;
-            color: #00e676;
+
+            border-radius: 6px;
+
+            border: none;
+
+            font-weight: bold;
+
+            font-size: 1.1em;
+
+            cursor: pointer;
+
+            transition: background 0.2s;
+
         }
-        .error { color: #ff5252; }
+
+        .start-btn { background-color: #00e676; color: #000; }
+
+        .start-btn:hover { background-color: #00c853; }
+
+        .stop-btn { background-color: #ff3d00; color: white; }
+
+        .stop-btn:hover { background-color: #d50000; }
+
+        
+
+        #status {
+
+            margin-top: 15px;
+
+            padding: 10px;
+
+            background: #333;
+
+            border-radius: 4px;
+
+            text-align: center;
+
+            font-weight: bold;
+
+        }
+
+        .status-running { color: #00e676; }
+
+        .status-stopped { color: #ff5252; }
+
+        
+
+        .log-container {
+
+            margin-top: 20px;
+
+            background: #121212;
+
+            border: 1px solid #333;
+
+            border-radius: 6px;
+
+            height: 200px;
+
+            overflow-y: auto;
+
+            padding: 10px;
+
+            font-family: 'Courier New', monospace;
+
+            font-size: 0.8em;
+
+            color: #00e676;
+
+        }
+
+        .log-entry { margin-bottom: 4px; }
+
+        .log-error { color: #ff5252; }
+
+        .log-snipe { color: #00e676; font-weight: bold; background: #004400; padding: 2px 4px; }
+
+        .log-info { color: #2196f3; }
+
     </style>
+
 </head>
+
 <body>
 
 <div class="container">
-    <h2>Roblox UGC Sniper</h2>
-    <input type="text" id="cookie" placeholder="Enter .ROBLOSEcurity Cookie">
-    <input type="text" id="itemId" placeholder="Enter UGC Item ID">
-    <input type="number" id="price" placeholder="Max Price (Optional)">
+
+    <h2>Roblox UGC Scanner</h2>
+
     
-    <button id="actionBtn" onclick="toggleSniper">Start Sniper</button>
-    
-    <div id="status">Status: Idle</div>
-    <div class="log" id="logBox">System ready...\n</div>
+
+    <div class="warning">
+
+        ⚠️ **WARNING:** Scanning searches aggressively. Use a **BURNER ACCOUNT** cookie. Your main account may be banned for excessive API requests.
+
+    </div>
+
+    <label>Roblox Cookie (.ROBLOSEcurity)</label>
+
+    <input type="text" id="cookie" placeholder="Enter .ROBLOSESecurity cookie">
+
+    <label>Search Query (Keywords)</label>
+
+    <input type="text" id="query" placeholder="e.g., 'free', 'head', 'face', 'new'">
+
+    <div style="font-size: 0.8em; color: #888; margin-top: 5px;">
+
+        Note: Roblox search is not real-time. This scans search results for items with 0 sales and low/free prices.
+
+    </div>
+
+    <label>Max Price (0 for Free only)</label>
+
+    <input type="number" id="maxPrice" value="0" min="0">
+
+    <button id="actionBtn" class="start-btn" onclick="toggleScanner">Start Scanner</button>
+
+    <div id="status" class="status-stopped">Status: Ready</div>
+
+    <div class="log-container" id="logBox">
+
+        <div class="log-entry">System initialized. Waiting for start...</div>
+
+    </div>
+
 </div>
 
 <script>
+
     let isRunning = false;
+
     let intervalId = null;
 
-    // NOTE: Browsers block direct API calls to Roblox from other sites (CORS).
-    // We must use a proxy. If this proxy stops working, you must find a new one.
-    const PROXY_URL = "https://corsproxy.io/?"; 
+    const PROXY_URL = "https://corsproxy.io/?";
 
-    function log(message, isError = false) {
+    function log(message, type = 'info') {
+
         const logBox = document.getElementById('logBox');
+
         const timestamp = new Date().toLocaleTimeString();
-        const colorClass = isError ? 'error' : '';
-        logBox.innerHTML += `<span class="${colorClass}">[${timestamp}] ${message}</span>\n`;
-        logBox.scrollTop = logBoxBox.scrollHeight;
+
+        let cssClass = 'log-entry';
+
+        if (type === 'error') cssClass = 'log-entry log-error';
+
+        if (type === 'snipe') cssClass = 'log-entry log-snipe';
+
+        if (type === 'info') cssClass = 'log-entry log-info';
+
+        const div = document.createElement('div');
+
+        div.className = cssClass;
+
+        div.textContent = `[${timestamp}] ${message}`;
+
+        logBox.appendChild(div);
+
+        logBox.scrollTop = logBox.scrollHeight;
+
     }
 
-    async function checkItem() {
-        const cookie = document.getElementById('cookie').value;
-        const itemId = document.getElementById('itemId').value;
-        const maxPriceInput = document.getElementById('price').value;
-        const maxPrice = maxPriceInput ? parseInt(maxPriceInput) : null;
+    async function scanRoblox() {
 
-        if (!cookie || !itemId) {
-            log("Missing cookie or Item ID!", true);
-            stopSniper();
+        const cookie = document.getElementById('cookie').value;
+
+        const query = document.getElementById('query').value || "free";
+
+        const maxPrice = parseInt(document.getElementById('maxPrice').value) || 0;
+
+        if (!cookie) {
+
+            log("Error: Cookie is missing.", "error");
+
+            stopScanner();
+
             return;
+
         }
 
         try {
-            // We check the sales API to see if the item is on sale
-            const url = `https://economy.roblox.com/v2/assets/${itemId}/details`;
-            const proxyUrl = PROXY_URL + encodeURIComponent(url);
 
-            const response = await fetch(proxyUrl, {
+            log(`Scanning for: "${query}" (Max Price: ${maxPrice}, Sales: 0)...`, "info");
+
+            
+
+            const marketUrl = `https://marketplace.roblox.com/v1/search?keyword=${encodeURIComponent(query)}&category=1&sortType=2&priceMin=0&priceMax=${maxPrice}&includeThumbnails=false`;
+
+            
+
+            const response = await fetch(PROXY_URL + encodeURIComponent(marketUrl), {
+
                 method: 'GET',
+
                 headers: {
-                    'Cookie': `.ROBLOSEcurity=${cookie}`,
+
+                    'Cookie': `.ROBLOSESecurity=${cookie}`,
+
                     'Content-Type': 'application/json'
-                },
-                mode: 'cors' // Attempting standard CORS request via proxy
+
+                }
+
             });
 
-            if (!response.ok) {
-                // Item might be off-sale or not found
-                if(response.status === 404) {
-                    log(`Item ${itemId} not found or off-sale.`);
-                } else {
-                    log(`Error ${response.status}: ${response.statusText}`, true);
-                }
+            if (response.status === 403 || response.status === 429) {
+
+                log("Rate limited or Captcha detected. Stopping to prevent ban.", "error");
+
+                stopScanner();
+
                 return;
+
+            }
+
+            if (!response.ok) {
+
+                log(`Search failed: ${response.status}`, "error");
+
+                return;
+
             }
 
             const data = await response.json();
 
-            if (data.IsOnSale && data.Price) {
-                if (maxPrice && data.Price > maxPrice) {
-                    log(`Item on sale for ${data.Price} (Too expensive, waiting for ${maxPrice})`);
-                    return;
+            
+
+            if (data.data && data.data.length > 0) {
+
+                for (const item of data.data) {
+
+                    if (item.price === 0 || (item.price && item.price <= maxPrice)) {
+
+                        if (item.saleCount === 0 || !item.saleCount) {
+
+                            log(`POTENTIAL SNIP: ${item.name} (ID: ${item.productId}) - Price: ${item.price || 0}`, "snipe");
+
+                            alert(`FOUND ITEM: ${item.name}\nID: ${item.productId}\nPrice: ${item.price || 0}\n\nGo check it immediately!`);
+
+                        }
+
+                    }
+
                 }
-                
-                log(`>>> ITEM FOUND! Price: ${data.Price} <<<`);
-                alert(`SUCCESS! Item ${itemId} is on sale for ${data.Price}. The bot has detected it.`);
-                // We do not stop automatically so you can manually handle it or modify code to auto-buy (complex)
-                
+
+                log(`Scanned ${data.data.length} items. No un-sniped items found matching criteria.`);
+
             } else {
-                log(`Item ${itemId} is not currently on sale.`);
+
+                log("No items found matching criteria.");
+
             }
 
         } catch (error) {
-            log(`Network Error: ${error.message}. Proxy might be blocked.`, true);
-            stopSniper();
+
+            log(`Error: ${error.message}. Proxy may be blocked or Roblox updated API.`, "error");
+
+            stopScanner();
+
         }
+
     }
 
-    function toggleSniper() {
+    function toggleScanner() {
+
         if (isRunning) {
-            stopSniper();
+
+            stopScanner();
+
         } else {
-            startSniper();
+
+            startScanner();
+
         }
+
     }
 
-    function startSniper() {
+    function startScanner() {
+
         const cookie = document.getElementById('cookie').value;
-        const itemId = document.getElementById('itemId').value;
 
-        if (!cookie || !itemId) {
-            alert("Please enter both a Cookie and an Item ID.");
+        if (!cookie) {
+
+            alert("Please enter your cookie.");
+
             return;
+
         }
 
-        isRunning = true;
-        document.getElementById('actionBtn').textContent = "Stop Sniper";
-        document.getElementById('actionBtn').classList.add('stop');
-        document.getElementById('status').textContent = "Status: Running...";
-        document.getElementById('status').style.color = "#00e676";
-        
-        log("Sniper started. Monitoring...");
-        
-        // Check immediately then every 2 seconds (Roblox has rate limits, don't go faster)
-        checkItem();
-        intervalId = setInterval(checkItem, 2000);
-    }
-
-    function stopSniper() {
         isRunning = false;
-        document.getElementById('actionBtn').textContent = "Start Sniper";
-        document.getElementById('actionBtn').classList.remove('stop');
-        document.getElementById('status').textContent = "Status: Stopped";
-        document.getElementById('status').style.color = "#aaa";
+
+        document.getElementById('actionBtn').textContent = "Stop Scanner";
+
+        document.getElementById('actionBtn').className = "stop-btn";
+
+        document.getElementById('status').textContent = "Status: SCANNING...";
+
+        document.getElementById('status').className = "status-running";
+
         
-        if (intervalId) {
-            clearInterval(intervalId);
-            intervalId = null;
-        }
-        log("Sniper stopped.");
+
+        log("Scanner started. Monitoring search results for 0-sales items...");
+
+        
+
+        scanRoblox();
+
+        intervalId = setInterval(scanRoblox, 5000);
+
     }
+
+    function stopScanner() {
+
+        isRunning = false;
+
+        document.getElementById('actionBtn').textContent = "Start Scanner";
+
+        document.getElementById('actionBtn').className = "start-btn";
+
+        document.getElementById('status').textContent = "Status: Stopped";
+
+        document.getElementById('status').className = "status-stopped";
+
+        
+
+        if (intervalId) {
+
+            clearInterval(intervalId);
+
+            intervalId = null;
+
+        }
+
+        log("Scanner stopped.");
+
+    }
+
 </script>
 
 </body>
+
 </html>
